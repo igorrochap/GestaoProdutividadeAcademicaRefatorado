@@ -7,4 +7,8 @@ public class Aluno extends Colaborador{
         super(nome, email);
         this.tipo = tipo;
     }
+
+    public String getTipo(){
+        return this.tipo;
+    }
 }
