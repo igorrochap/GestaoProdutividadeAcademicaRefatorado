@@ -1,6 +1,6 @@
 package classes;
 
-public class Projetos {
+public class Projeto {
     private String titulo;
     private String dataInicio, dataTermino;
     private String agenciaFinanciadora;
@@ -10,7 +10,7 @@ public class Projetos {
     private String participantes[];
     private String status;
 
-    public Projetos(
+    public Projeto(
         String titulo,
         String dataInicio, 
         String dataTermino,
