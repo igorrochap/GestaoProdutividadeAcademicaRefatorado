@@ -1,4 +1,4 @@
-package classes;
+package src.classes;
 
 public class Aluno extends Colaborador{
     public String tipo; // Graduação, mestrado ou doutorado

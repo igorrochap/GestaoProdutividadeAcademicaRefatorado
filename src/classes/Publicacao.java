@@ -1,4 +1,4 @@
-package classes;
+package src.classes;
 
 public class Publicacao extends ProducaoAcademica{
     private String titulo;

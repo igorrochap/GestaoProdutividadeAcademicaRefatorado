@@ -1,4 +1,4 @@
-package classes;
+package src.classes;
 
 public class Professor extends Colaborador{
     public Professor(String nome, String email){

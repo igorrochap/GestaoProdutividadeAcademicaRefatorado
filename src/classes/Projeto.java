@@ -1,4 +1,4 @@
-package classes;
+package src.classes;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class Projeto {
         if(this.status.equalsIgnoreCase("Em elaboração")){ // se o status do projeto for "em elaboração"
             if(colaborador instanceof Aluno){ // caso o colaborador seja um aluno
                 Aluno aluno = (Aluno) colaborador;
-                if(aluno.tipo == "Graduação"){ ; // se o aluno é um aluno de graduação
+                if(aluno.tipo == "Graduação"){  // se o aluno é um aluno de graduação
                     if(aluno.getProjetos() == 2) // se o aluno já tem 2 projetos atribuidos
                         System.out.println("O aluno já tem dois projetos atribuidos!");
                     else{
