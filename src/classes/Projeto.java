@@ -40,28 +40,28 @@ public class Projeto {
     }
 
     public void alocaColaborador(Colaborador colaborador){
-            if(this.status.equalsIgnoreCase("Em elaboracao")){ // se o status do projeto for "em elaboração"
-                if(colaborador instanceof Aluno){ // caso o colaborador seja um aluno
-                    Aluno aluno = (Aluno) colaborador;
-                    if(aluno.tipo.equalsIgnoreCase("Graduacao")){  // se o aluno é um aluno de graduação
-                        if(aluno.getQtdProjetos() == 2) // se o aluno já tem 2 projetos atribuidos
-                            System.out.println("O aluno já tem dois projetos atribuidos!");
-                        else{
-                            this.participantes.add(colaborador);
-                            colaborador.addProjeto(this); 
-                            aluno.addQtdProjeto(); // adiciona +1 no contador de projetos do aluno
-                            System.out.println("Aluno adicionado");
-                        }
-                    }
+        if(this.status.equalsIgnoreCase("Em elaboracao")){ // se o status do projeto for "em elaboração"
+            if(colaborador instanceof Aluno){ // caso o colaborador seja um aluno
+                Aluno aluno = (Aluno) colaborador;
+                if(aluno.tipo.equalsIgnoreCase("Graduacao")){  // se o aluno é um aluno de graduação
+                    if(aluno.getQtdProjetos() == 2) // se o aluno já tem 2 projetos atribuidos
+                        System.out.println("O aluno já tem dois projetos atribuidos!");
                     else{
-                        this.participantes.add(colaborador); 
-                        colaborador.addProjeto(this);
+                        this.participantes.add(colaborador);
+                        colaborador.addProjeto(this); 
+                        aluno.addQtdProjeto(); // adiciona +1 no contador de projetos do aluno
+                        System.out.println("Aluno adicionado");
                     }
                 }
+                else{
+                    this.participantes.add(colaborador); 
+                    colaborador.addProjeto(this);
+                }
             }
-            else{
-                System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
-            }
+        }
+        else{
+            System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
+        }
         //}
     }
 
