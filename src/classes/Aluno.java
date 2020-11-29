@@ -1,20 +1,20 @@
-package classes;
+package src.classes;
 
 public class Aluno extends Colaborador{
     public String tipo; // Graduação, mestrado ou doutorado
-    private int projetos;
+    private int qtdProjetos;
 
     public Aluno(String nome, String email, String tipo){
         super(nome, email);
         this.tipo = tipo;
-        this.projetos = 0;
+        this.qtdProjetos = 0;
     }
 
-    public int getProjetos() {
-        return projetos;
+    public int getQtdProjetos() {
+        return this.qtdProjetos;
     }
 
-    public void addProjeto(){
-        this.projetos++;
+    public void addQtdProjeto(){
+        this.qtdProjetos++;
     }
 }
