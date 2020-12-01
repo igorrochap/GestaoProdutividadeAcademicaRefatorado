@@ -1,6 +1,9 @@
 package src.classes;
 
+import java.util.ArrayList;
+
 public class Publicacao extends ProducaoAcademica{
+    private ArrayList<Colaborador> autores = new ArrayList<Colaborador>();
     private String titulo;
     private String nomeConferencia; // nome da conferencia em que foi publicada
     private int anoPublicacao; // ano de publicação
