@@ -27,7 +27,7 @@ public class Main {
         return opt;
     }
 
-    public static void newColaborador(ArrayList<Professor> professores){
+    public static void newColaborador(ArrayList<Professor> professores, ArrayList<Colaborador> colaboradores){
         Scanner op = new Scanner(System.in);
         Scanner n = new Scanner(System.in);
         Scanner e = new Scanner(System.in);
@@ -60,10 +60,12 @@ public class Main {
 
 
             Colaborador c = new Aluno(nome, email, tipo);
+            colaboradores.add(c);
             //System.out.print(Colaborador.getQtd());
         }
         else if(opt == 2){ // caso seja um professor
             Colaborador c = new Professor(nome, email);
+            colaboradores.add(c);
 
             Professor prof = (Professor) c;
             professores.add(prof);
@@ -71,6 +73,7 @@ public class Main {
         }
         else if(opt == 3){ // caso seja um pesquisador
             Colaborador c = new Pesquisador(nome, email);
+            colaboradores.add(c);
             //System.out.print(Colaborador.getQtd());
         }
 
@@ -79,7 +82,7 @@ public class Main {
         //e.close();
     }
 
-    public static void newProjeto(ArrayList<Professor> professores){
+    public static void newProjeto(ArrayList<Professor> professores, ArrayList<Projeto> projetos){
         int i = 0;
         Scanner t = new Scanner(System.in);
         Scanner di = new Scanner(System.in);
@@ -124,19 +127,65 @@ public class Main {
         String descricao = d.nextLine();
 
         System.out.println();
-        System.out.println("****************************************");
-        System.out.println("*                                      *");
-        for(i = 0; i < professores.size(); i++){
-            System.out.println("*            [" + i +"] "+ professores.get(i).getNome() +"                    *");
+
+        if(professores.size() > 0){
+            System.out.println("****************************************");
+            System.out.println("*                                      *");
+            for(i = 0; i < professores.size(); i++){
+                System.out.println("*            [" + i +"] "+ professores.get(i).getNome() +"                    *");
+            }
+            System.out.println("*                                      *");
+            System.out.println("****************************************");
+            System.out.print("Selecione o professor que será inicialmente alocado no projeto: ");
+            int prof = pr.nextInt();
+    
+            Colaborador professor = professores.get(prof);
+            
+            Projeto prj = new Projeto(titulo, dataInicio, dataTermino, agenciaFinanciadora, valorFinanciado, objetivo, descricao, professor);
+            projetos.add(prj);
         }
-        System.out.println("*                                      *");
-        System.out.println("****************************************");
-        System.out.print("Selecione o professor que será inicialmente alocado no projeto: ");
-        int prof = pr.nextInt();
+        else{
+            System.out.println("Não existem professores cadastrados no sistema!");
+        }
 
-        Colaborador professor = professores.get(prof);
+    }
 
-        Projeto prj = new Projeto(titulo, dataInicio, dataTermino, agenciaFinanciadora, valorFinanciado, objetivo, descricao, professor);
+    public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores){
+        Scanner p = new Scanner(System.in);
+        Scanner op = new Scanner(System.in);
+        int i = 0;
+
+        System.out.println("**************************************");
+        for(i = 0; i < projetos.size(); i++){
+            System.out.println("*     ["+ i +"] " + projetos.get(i).getTitulo() + "            *");
+        }
+        System.out.println("*************************************");
+        System.out.print("Selecione o projeto a ser editado: ");
+        int pr = p.nextInt();
+
+        Projeto projeto = projetos.get(pr);
+
+        System.out.println();
+        System.out.println("****************************");
+        System.out.println("*  [1] Alocar participante *");
+        System.out.println("*  [2] Alterar status      *");
+        System.out.println("****************************");
+        int opt = op.nextInt();
+
+        if(opt == 1) {
+            Scanner c = new Scanner(System.in);
+            System.out.println("**************************************");
+            for(i = 0; i < colaboradores.size(); i++){
+                System.out.println("*      ["+i+"] " + colaboradores.get(i).getNome() + "                      *");
+            }
+            System.out.println("**************************************");
+            System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
+            int col = c.nextInt();
+
+            Colaborador colaborador = colaboradores.get(col);
+
+            projeto.alocaColaborador(colaborador);
+        }
     }
 
     public static void main(String[] args) {
@@ -147,20 +196,28 @@ public class Main {
         System.out.println("**************************************");
         System.out.println();
 
+        ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>();
         ArrayList<Professor> professores = new ArrayList<Professor>();
+        ArrayList<Projeto> projetos = new ArrayList<Projeto>();
         int option = startOptions();
 
         while(option != 0){ // enquanto não for dado o comando de parar o programa
             switch(option){
                 case 1: // adiciona colaborador
                     System.out.println();
-                    newColaborador(professores);
+                    newColaborador(professores, colaboradores);
                     option = startOptions();
                     break;
                 case 2: // adiciona projeto
                     System.out.println();
-                    newProjeto(professores);
+                    newProjeto(professores, projetos);
                     option = startOptions();
+                    break;
+                case 3:
+                    //
+                case 4:
+                    System.out.println();
+                    editProjeto(projetos, colaboradores);
                     break;
             }
         }
