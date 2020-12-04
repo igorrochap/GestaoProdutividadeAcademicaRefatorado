@@ -127,13 +127,9 @@ public class Main {
         System.out.println();
 
         if(professores.size() > 0){
-            System.out.println("****************************************");
-            System.out.println("*                                      *");
             for(i = 0; i < professores.size(); i++){
                 System.out.println("[" + i +"] "+ professores.get(i).getNome());
             }
-            System.out.println("*                                      *");
-            System.out.println("****************************************");
             System.out.print("Selecione o professor que será inicialmente alocado no projeto: ");
             int prof = pr.nextInt();
     

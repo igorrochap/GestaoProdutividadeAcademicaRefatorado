@@ -40,7 +40,7 @@ public class Colaborador{
         //sort();
         Collections.sort(this.projetos, new Comparator<Projeto>(){
             public int compare(Projeto projeto1, Projeto projeto2){
-                return projeto1.getDataTermino().compareTo(projeto2.getDataTermino());
+                return - projeto1.getDataTermino().compareTo(projeto2.getDataTermino());
             }
         });
 
