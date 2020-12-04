@@ -86,4 +86,8 @@ public class Projeto {
     public String getTitulo(){
         return this.titulo;
     }
+
+    public String getDataTermino(){
+        return this.dataTermino;
+    }
 }

@@ -9,6 +9,7 @@ import src.classes.ProducaoAcademica;
 import src.classes.Professor;
 import src.classes.Pesquisador;
 import src.classes.Projeto;
+import src.classes.Publicacao;
 
 public class Main {
     public static int startOptions(){
@@ -19,6 +20,7 @@ public class Main {
         System.out.println("*  [2] Criar projeto             *");
         System.out.println("*  [3] Criar produção acadêmica  *");
         System.out.println("*  [4] Editar projeto            *");
+        System.out.println("*  [5] Consultar por colaborador *");
         System.out.println("*  [0] Encerrar programa         *");
         System.out.println("**********************************");
         System.out.print("Selecione a opção desejada: ");
@@ -159,7 +161,10 @@ public class Main {
 
         if(opt == 1){
             Scanner a = new Scanner(System.in); // scanner dos autores da publicação
-            Scanner sn = new Scanner(System.in);
+            Scanner sn = new Scanner(System.in); // scanner sim/nao
+            Scanner t = new Scanner(System.in); // scanner do titulo
+            Scanner con = new Scanner(System.in); // scanner da conferencia
+            Scanner ap = new Scanner(System.in); // scanner do ano de apresentaçaõ da publicação
             
 
             do{
@@ -174,6 +179,22 @@ public class Main {
                 System.out.println("Existem mais autores da publicação? [S/N]: ");
                 s = sn.nextLine();
             }while(s.equalsIgnoreCase("S"));
+
+            System.out.print("Informe o titulo da publicação: ");
+            String titulo = t.nextLine();
+
+            System.out.println();
+            
+            System.out.print("Informe o nome da conferência em que a publicação foi apresentada: ");
+            String nomeConferencia = con.nextLine();
+            
+            System.out.println();
+
+            System.out.print("Informe em que ano a publicação foi apresentada: ");
+            int anoPublicacao = ap.nextInt();
+
+
+            ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao);
         }
     }
 
@@ -218,6 +239,20 @@ public class Main {
         }
     }
 
+    public static void queryColaborador(ArrayList<Colaborador> colaboradores){
+        Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
+        for(int i = 0; i < colaboradores.size(); i++){
+            System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
+        }
+
+        System.out.print("Selecione o colaborador que deseja consultar os dados: ");
+        int col = c.nextInt();
+
+        Colaborador colaborador = colaboradores.get(col);
+        System.out.println();
+        colaborador.query();
+    }
+
     public static void main(String[] args) {
         ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); //colaboradores cadastrados no sistema
         ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
@@ -248,10 +283,17 @@ public class Main {
                 case 3:
                     ArrayList<Colaborador> autores = new ArrayList<Colaborador>(); // autores de uma publicacao
                     newProdAcad(colaboradores, autores);
+                    option = startOptions();
                     break;
                 case 4:
                     System.out.println();
                     editProjeto(projetos, colaboradores);
+                    option = startOptions();
+                    break;
+                case 5:
+                    System.out.println();
+                    queryColaborador(colaboradores);
+                    option = startOptions();
                     break;
             }
         }
