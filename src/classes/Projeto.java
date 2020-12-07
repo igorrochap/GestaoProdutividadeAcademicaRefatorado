@@ -62,7 +62,6 @@ public class Projeto {
         else{
             System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
         }
-        //}
     }
 
     public void addPublicacao(Publicacao publicacao){
@@ -86,5 +85,9 @@ public class Projeto {
 
     public String getTitulo(){
         return this.titulo;
+    }
+
+    public String getDataTermino(){
+        return this.dataTermino;
     }
 }
