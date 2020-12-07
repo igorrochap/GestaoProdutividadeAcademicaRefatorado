@@ -21,6 +21,7 @@ public class Main {
         System.out.println("*  [3] Criar produção acadêmica  *");
         System.out.println("*  [4] Editar projeto            *");
         System.out.println("*  [5] Consultar por colaborador *");
+        System.out.println("*  [6] Consultar por projeto     *");
         System.out.println("*  [0] Encerrar programa         *");
         System.out.println("**********************************");
         System.out.print("Selecione a opção desejada: ");
@@ -44,7 +45,6 @@ public class Main {
 
         System.out.print("Informe o nome do colaborador: ");
         String nome = n.nextLine();
-        System.out.println();
         System.out.print("Informe o email do colaborador: ");
         String email = e.nextLine();
         System.out.println();
@@ -237,6 +237,7 @@ public class Main {
 
     public static void queryColaborador(ArrayList<Colaborador> colaboradores){
         Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
+
         for(int i = 0; i < colaboradores.size(); i++){
             System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
         }
@@ -247,6 +248,21 @@ public class Main {
         Colaborador colaborador = colaboradores.get(col);
         System.out.println();
         colaborador.query();
+    }
+
+    public static void queryProjeto(ArrayList<Projeto> projetos){
+        Scanner p = new Scanner(System.in);
+
+        for(int i = 0; i < projetos.size(); i++){
+            System.out.println("[" + i +"] " + projetos.get(i).getTitulo());
+        }
+
+        System.out.print("Selecione o projeto que deseja consultar os dados: ");
+        int proj = p.nextInt();
+
+        Projeto projeto = projetos.get(proj);
+
+        projeto.query();
     }
 
     public static void main(String[] args) {
@@ -291,6 +307,9 @@ public class Main {
                     queryColaborador(colaboradores);
                     option = startOptions();
                     break;
+                case 6:
+                    System.out.println();
+                    //
             }
         }
     }

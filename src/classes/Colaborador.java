@@ -40,7 +40,7 @@ public class Colaborador{
         //sort();
         Collections.sort(this.projetos, new Comparator<Projeto>(){
             public int compare(Projeto projeto1, Projeto projeto2){
-                return - projeto1.getDataTermino().compareTo(projeto2.getDataTermino());
+                return - projeto1.getDataTermino().compareTo(projeto2.getDataTermino()); // fazendo a ordenação ser decrescente
             }
         });
 
@@ -52,8 +52,8 @@ public class Colaborador{
         System.out.println("Email do colaborador: " + this.email);
         ArrayList<Projeto> projetosSort = new ArrayList<Projeto>();
 
+        projetosSort = sortDescending();
         for(int i = 0; i < this.projetos.size(); i++){
-            projetosSort = sortDescending();
 
             System.out.println("Projeto " + (i+1) + ": " + projetosSort.get(i).getTitulo());
         }

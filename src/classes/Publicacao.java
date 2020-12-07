@@ -14,4 +14,12 @@ public class Publicacao extends ProducaoAcademica{
         this.nomeConferencia = nomeConferencia;
         this.anoPublicacao = anoPublicacao;
     }
+
+    public String getTitulo(){
+        return this.titulo;
+    }
+
+    public int getAnoPublicacao(){
+        return this.anoPublicacao;
+    }
 }
