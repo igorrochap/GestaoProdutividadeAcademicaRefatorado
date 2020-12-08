@@ -10,6 +10,7 @@ import src.classes.Professor;
 import src.classes.Pesquisador;
 import src.classes.Projeto;
 import src.classes.Publicacao;
+import src.classes.Relatorio;
 
 public class Main {
     public static int startOptions(){
@@ -21,15 +22,17 @@ public class Main {
         System.out.println("*  [3] Criar produção acadêmica  *");
         System.out.println("*  [4] Editar projeto            *");
         System.out.println("*  [5] Consultar por colaborador *");
+        System.out.println("*  [6] Consultar por projeto     *");
+        System.out.println("*  [7] Relatório                 *");
         System.out.println("*  [0] Encerrar programa         *");
         System.out.println("**********************************");
         System.out.print("Selecione a opção desejada: ");
         int opt = op.nextInt();
 
-        return opt;
+        return opt; // opção selecionada
     }
 
-    public static void newColaborador(ArrayList<Professor> professores, ArrayList<Colaborador> colaboradores){
+    public static void newColaborador(ArrayList<Professor> professores, ArrayList<Colaborador> colaboradores,  ArrayList<Aluno> alunos){
         Scanner op = new Scanner(System.in); //scanner da opcao
         Scanner n = new Scanner(System.in); // scanner do nome do colaborador
         Scanner e = new Scanner(System.in); //scanner do email do colaborador
@@ -44,7 +47,6 @@ public class Main {
 
         System.out.print("Informe o nome do colaborador: ");
         String nome = n.nextLine();
-        System.out.println();
         System.out.print("Informe o email do colaborador: ");
         String email = e.nextLine();
         System.out.println();
@@ -63,6 +65,9 @@ public class Main {
 
             Colaborador c = new Aluno(nome, email, tipo);
             colaboradores.add(c);
+            
+            Aluno al = (Aluno) c;
+            alunos.add(al);
             //System.out.print(Colaborador.getQtd());
         }
         else if(opt == 2){ // caso seja um professor
@@ -138,15 +143,16 @@ public class Main {
             Projeto prj = new Projeto(titulo, dataInicio, dataTermino, agenciaFinanciadora, valorFinanciado, objetivo, descricao, professor);
             projetos.add(prj);
         }
-        else{
-            System.out.println("Não existem professores cadastrados no sistema!");
+        else{ // o projeto deve ter pelo menos 1 professor alocado
+            System.out.println("Não existem professores cadastrados no sistema! O projeto deve ter pelo menos 1 professor alocado!");
         }
 
     }
 
-    public static void newProdAcad(ArrayList<Colaborador> colaboradores, ArrayList<Colaborador> autores){
+    public static void newProdAcad(ArrayList<Colaborador> colaboradores, ArrayList<Colaborador> autores, 
+                                   ArrayList<Professor> professores,  ArrayList<Aluno> alunos){
         Scanner op = new Scanner(System.in); //scanner da opção
-        String s;
+        String s; // opção de continuar adicionando autores
 
         System.out.println("**********************");
         System.out.println("*  [1] Publicação    *");
@@ -160,9 +166,8 @@ public class Main {
             Scanner sn = new Scanner(System.in); // scanner sim/nao
             Scanner t = new Scanner(System.in); // scanner do titulo
             Scanner con = new Scanner(System.in); // scanner da conferencia
-            Scanner ap = new Scanner(System.in); // scanner do ano de apresentaçaõ da publicação
+            Scanner ap = new Scanner(System.in); // scanner do ano de apresentação da publicação
             
-
             do{
                 System.out.println("Informe os autores da publicação: ");
                 for(int i = 0; i < colaboradores.size(); i++){
@@ -190,7 +195,40 @@ public class Main {
             int anoPublicacao = ap.nextInt();
 
 
-            ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao);
+            ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao, autores);
+            
+            Publicacao publicacao = (Publicacao) prod;
+            for(int i = 0; i < autores.size(); i++){
+                autores.get(i).addPublicacao(publicacao);
+
+                autores.remove(i);
+            }
+        }
+        else if(opt == 2){
+            Scanner al = new Scanner(System.in); // scanner do aluno a ser orientado
+            Scanner p = new Scanner(System.in); // scanner do professor que irá orientar
+
+            for(int i = 0; i < alunos.size(); i++){
+                System.out.println("    [" + i + "] " + alunos.get(i).getNome());
+            }
+
+            System.out.print("Selecione o aluno a ser orientado: ");
+            int alu = al.nextInt();
+
+            Aluno aluno = alunos.get(alu);
+
+            for(int i = 0; i < professores.size(); i++){
+                System.out.println("    [" + i + "] " + professores.get(i).getNome());
+            }
+
+            System.out.print("Selecione o professor que irá orientar: ");
+            int prof = p.nextInt();
+
+            Professor professor = professores.get(prof);
+
+            ProducaoAcademica orientacao = new ProducaoAcademica();
+
+            orientacao.orientacao(professor, aluno); // adicionando a orientação
         }
     }
 
@@ -214,6 +252,7 @@ public class Main {
         System.out.println("*  [1] Alocar participante *");
         System.out.println("*  [2] Alterar status      *");
         System.out.println("****************************");
+        System.out.print("Selecione a opção desejada: ");
         int opt = op.nextInt();
 
         if(opt == 1) {
@@ -237,6 +276,7 @@ public class Main {
 
     public static void queryColaborador(ArrayList<Colaborador> colaboradores){
         Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
+
         for(int i = 0; i < colaboradores.size(); i++){
             System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
         }
@@ -249,10 +289,26 @@ public class Main {
         colaborador.query();
     }
 
+    public static void queryProjeto(ArrayList<Projeto> projetos){
+        Scanner p = new Scanner(System.in);
+
+        for(int i = 0; i < projetos.size(); i++){
+            System.out.println("[" + i +"] " + projetos.get(i).getTitulo());
+        }
+
+        System.out.print("Selecione o projeto que deseja consultar os dados: ");
+        int proj = p.nextInt();
+
+        Projeto projeto = projetos.get(proj);
+
+        projeto.query();
+    }
+
     public static void main(String[] args) {
         ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); //colaboradores cadastrados no sistema
         ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
         ArrayList<Projeto> projetos = new ArrayList<Projeto>(); // projetos cadastrados no sistema
+        ArrayList<Aluno> alunos = new ArrayList<Aluno>(); // projetos cadastrados no sistema
         
 
         System.out.println("**************************************");
@@ -266,29 +322,47 @@ public class Main {
 
         while(option != 0){ // enquanto não for dado o comando de parar o programa
             switch(option){
-                case 1: // adiciona colaborador
+                case 1: // adiciona novo colaborador
                     System.out.println();
-                    newColaborador(professores, colaboradores);
+                    newColaborador(professores, colaboradores, alunos);
+                    System.out.println();
                     option = startOptions();
                     break;
-                case 2: // adiciona projeto
+                case 2: // adiciona novo projeto
                     System.out.println();
                     newProjeto(professores, projetos);
+                    System.out.println();
                     option = startOptions();
                     break;
-                case 3:
+                case 3: // adiciona nova produção academica
                     ArrayList<Colaborador> autores = new ArrayList<Colaborador>(); // autores de uma publicacao
-                    newProdAcad(colaboradores, autores);
+                    newProdAcad(colaboradores, autores, professores, alunos);
+                    System.out.println();
                     option = startOptions();
                     break;
-                case 4:
+                case 4: // edita projeto existente
                     System.out.println();
                     editProjeto(projetos, colaboradores);
+                    System.out.println();
                     option = startOptions();
                     break;
-                case 5:
+                case 5: // consulta por colaborador
                     System.out.println();
                     queryColaborador(colaboradores);
+                    System.out.println();
+                    option = startOptions();
+                    break;
+                case 6: // consulta por projeto
+                    System.out.println();
+                    queryProjeto(projetos);
+                    System.out.println();
+                    option = startOptions();
+                    break;
+                case 7: // relatorio do laboratório
+                    System.out.println();
+                    Relatorio relatorio = new Relatorio();
+                    relatorio.relatorio();
+                    System.out.println();
                     option = startOptions();
                     break;
             }

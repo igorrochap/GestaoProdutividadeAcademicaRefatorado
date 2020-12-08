@@ -3,13 +3,18 @@ package src.classes;
 import java.util.ArrayList;
 
 public class ProducaoAcademica {
-    ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>();
+    private static int qtdProd = 0;
 
-    public void add(Colaborador colaborador){
-        this.colaboradores.add(colaborador);
+    public void orientacao(Professor professor, Aluno aluno){
+        qtdProd++;
+        professor.setOrientados(aluno);
     }
-    
-    // public void relatorio(){
-        //     
-    // }
+
+    public static int getQtdProd(){
+        return qtdProd;
+    }
+
+    public void setQtdProd(){
+        qtdProd++;
+    }
 }
