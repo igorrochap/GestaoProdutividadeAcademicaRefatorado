@@ -14,6 +14,14 @@ import src.classes.Publicacao;
 import src.classes.Relatorio;
 
 public class Main {
+    public static void msgErroDados(){
+        System.err.println("Dados informados incorretamente! Por favor, informe os dados corretamente.");
+    }
+
+    public static void msgErroOpcoes(){
+        System.err.println("Por favor, selecione uma das opções válidas.");
+    }
+
     public static int startOptions(){
         Scanner op = new Scanner(System.in); // scanner da opção
         int opt = -1;
@@ -34,7 +42,7 @@ public class Main {
             opt = op.nextInt();
         }
         catch(InputMismatchException error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             opt = startOptions();
         }
 
@@ -56,7 +64,7 @@ public class Main {
             grau = s.nextInt();
         }
         catch(InputMismatchException error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             grau = alunoGrau();
         }
 
@@ -78,49 +86,54 @@ public class Main {
 
         try{
             opt = op.nextInt();
+
+            System.out.print("Informe o nome do colaborador: ");
+            String nome = n.nextLine();
+            System.out.print("Informe o email do colaborador: ");
+            String email = e.nextLine();
+            System.out.println();
+        
+            if(opt == 1){ // caso seja um aluno
+                String tipo = "";
+                int grau = 0;
+
+                grau = alunoGrau();
+
+                do{
+                    if(grau == 1)
+                        tipo = "Graduacao";
+                    else if(grau == 2)
+                        tipo = "Mestrado";
+                    else if(grau == 3)
+                        tipo = "Doutorado";
+                    else{
+                        msgErroOpcoes();
+                        grau = alunoGrau();
+                    }
+                }while(grau == -1);
+
+                Colaborador c = new Aluno(nome, email, tipo);
+                colaboradores.add(c);
+        
+                Aluno al = (Aluno) c;
+                alunos.add(al);
+            }
+            else if(opt == 2){ // caso seja um professor
+                Colaborador c = new Professor(nome, email);
+                colaboradores.add(c);
+
+                Professor prof = (Professor) c;
+                professores.add(prof);
+            }
+            else if(opt == 3){ // caso seja um pesquisador
+                Colaborador c = new Pesquisador(nome, email);
+                colaboradores.add(c);
+            }    
         }
         catch(InputMismatchException error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             newColaborador(professores, colaboradores, alunos);
         }
-
-        System.out.print("Informe o nome do colaborador: ");
-        String nome = n.nextLine();
-        System.out.print("Informe o email do colaborador: ");
-        String email = e.nextLine();
-        System.out.println();
-        
-        if(opt == 1){ // caso seja um aluno
-            String tipo = "";
-            int grau = 0;
-
-            grau = alunoGrau();
-
-            if(grau == 1)
-                tipo = "Graduacao";
-            else if(grau == 2)
-                tipo = "Mestrado";
-            else if(grau == 3)
-                tipo = "Doutorado";
-
-            Colaborador c = new Aluno(nome, email, tipo);
-            colaboradores.add(c);
-        
-            Aluno al = (Aluno) c;
-            alunos.add(al);
-        }
-        else if(opt == 2){ // caso seja um professor
-            Colaborador c = new Professor(nome, email);
-            colaboradores.add(c);
-
-            Professor prof = (Professor) c;
-            professores.add(prof);
-        }
-        else if(opt == 3){ // caso seja um pesquisador
-            Colaborador c = new Pesquisador(nome, email);
-            colaboradores.add(c);
-        }
-            
     }
 
     public static void newProjeto(ArrayList<Professor> professores, ArrayList<Projeto> projetos){
@@ -187,137 +200,150 @@ public class Main {
             }
         }
         catch(Exception ex){
-            System.err.println("Ocorreu um erro, por favor tente novamente");
+            msgErroDados();
             newProjeto(professores, projetos);
         }
     }
 
     public static void newProdAcad(ArrayList<Colaborador> colaboradores, ArrayList<Colaborador> autores, 
                                    ArrayList<Professor> professores,  ArrayList<Aluno> alunos){
-        Scanner op = new Scanner(System.in); //scanner da opção
-        String s; // opção de continuar adicionando autores
-
-        System.out.println("**********************");
-        System.out.println("*  [1] Publicação    *");
-        System.out.println("*  [2] Orientação    *");
-        System.out.println("**********************");
-        System.out.print("Selecione a opção desejada: ");
-        int opt = op.nextInt();
-
-        if(opt == 1){
-            Scanner a = new Scanner(System.in); // scanner dos autores da publicação
-            Scanner sn = new Scanner(System.in); // scanner sim/nao
-            Scanner t = new Scanner(System.in); // scanner do titulo
-            Scanner con = new Scanner(System.in); // scanner da conferencia
-            Scanner ap = new Scanner(System.in); // scanner do ano de apresentação da publicação
-            
-            do{
-                System.out.println("Informe os autores da publicação: ");
-                for(int i = 0; i < colaboradores.size(); i++){
-                    System.out.println("["+ i +"] " + colaboradores.get(i).getNome());
+        try{
+            Scanner op = new Scanner(System.in); //scanner da opção
+            String s; // opção de continuar adicionando autores
+    
+            System.out.println("**********************");
+            System.out.println("*  [1] Publicação    *");
+            System.out.println("*  [2] Orientação    *");
+            System.out.println("**********************");
+            System.out.print("Selecione a opção desejada: ");
+            int opt = op.nextInt();
+    
+            if(opt == 1){
+                Scanner a = new Scanner(System.in); // scanner dos autores da publicação
+                Scanner sn = new Scanner(System.in); // scanner sim/nao
+                Scanner t = new Scanner(System.in); // scanner do titulo
+                Scanner con = new Scanner(System.in); // scanner da conferencia
+                Scanner ap = new Scanner(System.in); // scanner do ano de apresentação da publicação
+                
+                do{
+                    System.out.println("Informe os autores da publicação: ");
+                    for(int i = 0; i < colaboradores.size(); i++){
+                        System.out.println("["+ i +"] " + colaboradores.get(i).getNome());
+                    }
+                    int au = a.nextInt();
+                    Colaborador c = colaboradores.get(au);
+                    autores.add(c);
+    
+                    System.out.println("Existem mais autores da publicação? [S/N]: ");
+                    s = sn.nextLine();
+                }while(s.equalsIgnoreCase("S"));
+    
+                System.out.print("Informe o titulo da publicação: ");
+                String titulo = t.nextLine();
+    
+                System.out.println();
+                
+                System.out.print("Informe o nome da conferência em que a publicação foi apresentada: ");
+                String nomeConferencia = con.nextLine();
+                
+                System.out.println();
+    
+                System.out.print("Informe em que ano a publicação foi apresentada: ");
+                int anoPublicacao = ap.nextInt();
+    
+    
+                ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao, autores);
+                
+                Publicacao publicacao = (Publicacao) prod;
+                for(int i = 0; i < autores.size(); i++){
+                    autores.get(i).addPublicacao(publicacao);
+    
+                    autores.remove(i);
                 }
-                int au = a.nextInt();
-                Colaborador c = colaboradores.get(au);
-                autores.add(c);
-
-                System.out.println("Existem mais autores da publicação? [S/N]: ");
-                s = sn.nextLine();
-            }while(s.equalsIgnoreCase("S"));
-
-            System.out.print("Informe o titulo da publicação: ");
-            String titulo = t.nextLine();
-
-            System.out.println();
-            
-            System.out.print("Informe o nome da conferência em que a publicação foi apresentada: ");
-            String nomeConferencia = con.nextLine();
-            
-            System.out.println();
-
-            System.out.print("Informe em que ano a publicação foi apresentada: ");
-            int anoPublicacao = ap.nextInt();
-
-
-            ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao, autores);
-            
-            Publicacao publicacao = (Publicacao) prod;
-            for(int i = 0; i < autores.size(); i++){
-                autores.get(i).addPublicacao(publicacao);
-
-                autores.remove(i);
+            }
+            else if(opt == 2){
+                Scanner al = new Scanner(System.in); // scanner do aluno a ser orientado
+                Scanner p = new Scanner(System.in); // scanner do professor que irá orientar
+    
+                for(int i = 0; i < alunos.size(); i++){
+                    System.out.println("    [" + i + "] " + alunos.get(i).getNome());
+                }
+    
+                System.out.print("Selecione o aluno a ser orientado: ");
+                int alu = al.nextInt();
+    
+                Aluno aluno = alunos.get(alu);
+    
+                for(int i = 0; i < professores.size(); i++){
+                    System.out.println("    [" + i + "] " + professores.get(i).getNome());
+                }
+    
+                System.out.print("Selecione o professor que irá orientar: ");
+                int prof = p.nextInt();
+    
+                Professor professor = professores.get(prof);
+    
+                ProducaoAcademica orientacao = new ProducaoAcademica();
+    
+                orientacao.orientacao(professor, aluno); // adicionando a orientação
             }
         }
-        else if(opt == 2){
-            Scanner al = new Scanner(System.in); // scanner do aluno a ser orientado
-            Scanner p = new Scanner(System.in); // scanner do professor que irá orientar
-
-            for(int i = 0; i < alunos.size(); i++){
-                System.out.println("    [" + i + "] " + alunos.get(i).getNome());
-            }
-
-            System.out.print("Selecione o aluno a ser orientado: ");
-            int alu = al.nextInt();
-
-            Aluno aluno = alunos.get(alu);
-
-            for(int i = 0; i < professores.size(); i++){
-                System.out.println("    [" + i + "] " + professores.get(i).getNome());
-            }
-
-            System.out.print("Selecione o professor que irá orientar: ");
-            int prof = p.nextInt();
-
-            Professor professor = professores.get(prof);
-
-            ProducaoAcademica orientacao = new ProducaoAcademica();
-
-            orientacao.orientacao(professor, aluno); // adicionando a orientação
+        catch(Exception error){
+            msgErroDados();
+            newProdAcad(colaboradores, autores, professores, alunos);
         }
     }
 
     public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores){
-        Scanner p = new Scanner(System.in); //scanner do projeto
-        Scanner op = new Scanner(System.in);//scanner da opcao
-        int i = 0;
-
-        System.out.println("**************************************");
-        for(i = 0; i < projetos.size(); i++){
-            System.out.println("["+ i +"] " + projetos.get(i).getTitulo());
-        }
-        System.out.println("*************************************");
-        System.out.print("Selecione o projeto a ser editado: ");
-        int pr = p.nextInt();
-
-        Projeto projeto = projetos.get(pr);
-
-        System.out.println();
-        System.out.println("****************************");
-        System.out.println("*  [1] Alocar participante *");
-        System.out.println("*  [2] Alterar status      *");
-        System.out.println("****************************");
-        System.out.print("Selecione a opção desejada: ");
-        int opt = op.nextInt();
-
-        if(opt == 1) {
-            Scanner c = new Scanner(System.in);
+        try{
+            Scanner p = new Scanner(System.in); //scanner do projeto
+            Scanner op = new Scanner(System.in);//scanner da opcao
+            int i = 0;
+    
             System.out.println("**************************************");
-            for(i = 0; i < colaboradores.size(); i++){
-                System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+            for(i = 0; i < projetos.size(); i++){
+                System.out.println("["+ i +"] " + projetos.get(i).getTitulo());
             }
-            System.out.println("**************************************");
-            System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
-            int col = c.nextInt();
-
-            Colaborador colaborador = colaboradores.get(col);
-
-            projeto.alocaColaborador(colaborador);
+            System.out.println("*************************************");
+            System.out.print("Selecione o projeto a ser editado: ");
+            int pr = p.nextInt();
+    
+            Projeto projeto = projetos.get(pr);
+    
+            System.out.println();
+            System.out.println("****************************");
+            System.out.println("*  [1] Alocar participante *");
+            System.out.println("*  [2] Alterar status      *");
+            System.out.println("****************************");
+            System.out.print("Selecione a opção desejada: ");
+            int opt = op.nextInt();
+    
+            if(opt == 1) {
+                Scanner c = new Scanner(System.in);
+                System.out.println("**************************************");
+                for(i = 0; i < colaboradores.size(); i++){
+                    System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+                }
+                System.out.println("**************************************");
+                System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
+                int col = c.nextInt();
+    
+                Colaborador colaborador = colaboradores.get(col);
+    
+                projeto.alocaColaborador(colaborador);
+            }
+            else if(opt == 2){
+                projeto.changeStatus();
+            }
         }
-        else if(opt == 2){
-            projeto.changeStatus();
+        catch(Exception error){
+            msgErroDados();
+            editProjeto(projetos, colaboradores);
         }
     }
 
     public static void queryColaborador(ArrayList<Colaborador> colaboradores){
+        int col;
         Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
 
         for(int i = 0; i < colaboradores.size(); i++){
@@ -325,11 +351,16 @@ public class Main {
         }
 
         System.out.print("Selecione o colaborador que deseja consultar os dados: ");
-        int col = c.nextInt();
-
-        Colaborador colaborador = colaboradores.get(col);
-        System.out.println();
-        colaborador.query();
+        try{
+            col = c.nextInt();
+            Colaborador colaborador = colaboradores.get(col);
+            System.out.println();
+            colaborador.query();
+        }
+        catch(InputMismatchException error){
+            msgErroOpcoes();
+            queryColaborador(colaboradores);
+        }
     }
 
     public static void queryProjeto(ArrayList<Projeto> projetos){
@@ -340,11 +371,18 @@ public class Main {
         }
 
         System.out.print("Selecione o projeto que deseja consultar os dados: ");
-        int proj = p.nextInt();
-
-        Projeto projeto = projetos.get(proj);
-
-        projeto.query();
+        
+        try{
+            int proj = p.nextInt();
+    
+            Projeto projeto = projetos.get(proj);
+            System.out.println();
+            projeto.query();
+        }
+        catch(InputMismatchException error){
+            msgErroOpcoes();
+            queryProjeto(projetos);
+        }
     }
 
     public static void main(String[] args) {
