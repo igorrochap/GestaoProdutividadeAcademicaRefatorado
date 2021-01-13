@@ -18,9 +18,9 @@ public class Projeto {
     private String status;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
     private static int qtdProjetos = 0; // quantidade total de projetos
-    private static int qtdProjetosE = 0; // quantidade de projetos em elaboração
-    private static int qtdProjetosA = 0; // quantidade de projetos em andamento
-    private static int qtdProjetosC = 0; // quantidade de projetos concluidos
+    private static int qtdProjetosElaboracao = 0; // quantidade de projetos em elaboração
+    private static int qtdProjetosAndamento = 0; // quantidade de projetos em andamento
+    private static int qtdProjetosConcluidos = 0; // quantidade de projetos concluidos
 
     public Projeto(
         String titulo,
@@ -46,7 +46,7 @@ public class Projeto {
         this.participantes.add(this.professor);
         this.professor.addProjeto(this);
         qtdProjetos++;
-        qtdProjetosE++;
+        qtdProjetosElaboracao++;
     }
 
     public String getTitulo(){
@@ -61,16 +61,16 @@ public class Projeto {
         return qtdProjetos;
     }
     
-    public static int getQtdProjetosE(){
-        return qtdProjetosE;
+    public static int getQtdProjetosElaboracao(){
+        return qtdProjetosElaboracao;
     }
     
-    public static int getQtdProjetosA(){
-        return qtdProjetosA;
+    public static int getQtdProjetosAndamento(){
+        return qtdProjetosAndamento;
     }
     
-    public static int getQtdProjetosC(){
-        return qtdProjetosC;
+    public static int getQtdProjetosConcluidos(){
+        return qtdProjetosConcluidos;
     }
     
     public void alocaColaborador(Colaborador colaborador){
@@ -109,15 +109,15 @@ public class Projeto {
         if(this.status.equalsIgnoreCase("Em elaboracao")){
             this.status = "Em andamento";
             System.out.println("O projeto agora está em andamento!");
-            qtdProjetosE--; // diminui a quantidade de projetos em elaboração
-            qtdProjetosA++; // aumenta a quantidade de projetos em andamento
+            qtdProjetosElaboracao--;
+            qtdProjetosAndamento++; 
         }
         else if(this.status.equalsIgnoreCase("Em andamento")){
             if(this.publicacoes.size() > 0){ // caso existam publicações associadas ao projeto
                 this.status = "Concluido";
                 System.out.println("Projeto concluido!");
-                qtdProjetosA--; // diminui a quantidade de projetos em andamento
-                qtdProjetosC++; // aumenta a quantidade de projetos concluidos
+                qtdProjetosAndamento--; 
+                qtdProjetosConcluidos++; 
             } 
             else{
                 System.out.println("Para alterar o status para 'Concluido', o projeto deve ter publicações associadas");
@@ -128,9 +128,9 @@ public class Projeto {
     public ArrayList<Publicacao> publicacoesSort(){
         Collections.sort(this.publicacoes, new Comparator<Publicacao>(){
             public int compare(Publicacao publicacao1, Publicacao publicacao2){
-                Integer a1 = publicacao1.getAnoPublicacao(); // argumento 1
-                Integer a2 = publicacao2.getAnoPublicacao(); // argumento 2
-                return - a1.compareTo(a2); // retornando em ordem descrescente
+                Integer arg1 = publicacao1.getAnoPublicacao(); 
+                Integer arg2 = publicacao2.getAnoPublicacao();
+                return - arg1.compareTo(arg2); // retornando em ordem descrescente
             }
         });
 
