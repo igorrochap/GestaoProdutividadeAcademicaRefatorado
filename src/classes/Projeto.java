@@ -3,6 +3,8 @@ package src.classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Projeto {
     private String titulo;
@@ -155,6 +157,28 @@ public class Projeto {
         System.out.println("Produções acadêmicas do projeto: ");
         for(int i = 0; i < publicacoes.size(); i++){
             System.out.println("    #" + (i + 1) + " " + publicacoesSort.get(i).getTitulo());
+        }
+    }
+
+    public static void queryProjeto(ArrayList<Projeto> projetos){
+        Scanner p = new Scanner(System.in);
+
+        for(int i = 0; i < projetos.size(); i++){
+            System.out.println("[" + i +"] " + projetos.get(i).getTitulo());
+        }
+
+        System.out.print("Selecione o projeto que deseja consultar os dados: ");
+        
+        try{
+            int proj = p.nextInt();
+    
+            Projeto projeto = projetos.get(proj);
+            System.out.println();
+            projeto.query();
+        }
+        catch(InputMismatchException error){
+            System.err.println("Por favor, selecione uma das opções válidas.");
+            queryProjeto(projetos);
         }
     }
 }
