@@ -3,6 +3,8 @@ package src.classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Colaborador{
     private String nome;
@@ -78,6 +80,27 @@ public class Colaborador{
         publiSort = sortDescendingPubli();
         for(int i = 0; i < this.publicacoes.size(); i ++){
             System.out.println("  Produção " + (i + 1) + ": " + publiSort.get(i).getTitulo());
+        }
+    }
+
+    public static void queryColaborador(ArrayList<Colaborador> colaboradores){
+        int col;
+        Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
+
+        for(int i = 0; i < colaboradores.size(); i++){
+            System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
+        }
+
+        System.out.print("Selecione o colaborador que deseja consultar os dados: ");
+        try{
+            col = c.nextInt();
+            Colaborador colaborador = colaboradores.get(col);
+            System.out.println();
+            colaborador.query();
+        }
+        catch(InputMismatchException error){
+            System.err.println("Por favor, selecione uma das opções válidas.");
+            queryColaborador(colaboradores);
         }
     }
 }

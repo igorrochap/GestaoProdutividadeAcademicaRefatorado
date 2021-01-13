@@ -342,49 +342,6 @@ public class Main {
         }
     }
 
-    public static void queryColaborador(ArrayList<Colaborador> colaboradores){
-        int col;
-        Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
-
-        for(int i = 0; i < colaboradores.size(); i++){
-            System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
-        }
-
-        System.out.print("Selecione o colaborador que deseja consultar os dados: ");
-        try{
-            col = c.nextInt();
-            Colaborador colaborador = colaboradores.get(col);
-            System.out.println();
-            colaborador.query();
-        }
-        catch(InputMismatchException error){
-            msgErroOpcoes();
-            queryColaborador(colaboradores);
-        }
-    }
-
-    public static void queryProjeto(ArrayList<Projeto> projetos){
-        Scanner p = new Scanner(System.in);
-
-        for(int i = 0; i < projetos.size(); i++){
-            System.out.println("[" + i +"] " + projetos.get(i).getTitulo());
-        }
-
-        System.out.print("Selecione o projeto que deseja consultar os dados: ");
-        
-        try{
-            int proj = p.nextInt();
-    
-            Projeto projeto = projetos.get(proj);
-            System.out.println();
-            projeto.query();
-        }
-        catch(InputMismatchException error){
-            msgErroOpcoes();
-            queryProjeto(projetos);
-        }
-    }
-
     public static void main(String[] args) {
         ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); //colaboradores cadastrados no sistema
         ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
@@ -429,13 +386,13 @@ public class Main {
                     break;
                 case 5: // consulta por colaborador
                     System.out.println();
-                    queryColaborador(colaboradores);
+                    Colaborador.queryColaborador(colaboradores);
                     System.out.println();
                     option = startOptions();
                     break;
                 case 6: // consulta por projeto
                     System.out.println();
-                    queryProjeto(projetos);
+                    Projeto.queryProjeto(projetos);
                     System.out.println();
                     option = startOptions();
                     break;
