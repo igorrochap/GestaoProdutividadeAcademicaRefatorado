@@ -4,14 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import src.classes.Aluno;
-import src.classes.Colaborador;
-import src.classes.ProducaoAcademica;
-import src.classes.Professor;
-import src.classes.Pesquisador;
-import src.classes.Projeto;
-import src.classes.Publicacao;
-import src.classes.Relatorio;
+import src.classes.*;
 
 public class Main {
     public static void msgErroDados(){

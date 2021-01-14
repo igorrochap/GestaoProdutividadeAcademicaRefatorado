@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import src.classes.state.*;
 
 public class Projeto {
     private String titulo;
@@ -15,12 +16,16 @@ public class Projeto {
     private String descricao;
     private ArrayList<Colaborador> participantes = new ArrayList<Colaborador>();
     private Colaborador professor;
-    private String status;
+    private State elaboracaoState;
+    private State andamentoState;
+    private State concluidoState;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
     private static int qtdProjetos = 0; // quantidade total de projetos
     private static int qtdProjetosElaboracao = 0; // quantidade de projetos em elaboração
     private static int qtdProjetosAndamento = 0; // quantidade de projetos em andamento
     private static int qtdProjetosConcluidos = 0; // quantidade de projetos concluidos
+
+    State status = elaboracaoState;
 
     public Projeto(
         String titulo,
@@ -33,6 +38,9 @@ public class Projeto {
         Colaborador professor
     )
     {
+        elaboracaoState = new ElaboracaoState();
+        andamentoState = new AndamentoState();
+        concluidoState = new ConcluidoState();
         this.titulo = titulo;
         this.dataInicio = dataInicio;
         this.dataTermino = dataTermino;
@@ -40,8 +48,6 @@ public class Projeto {
         this.valorFinanciado = valorFinanciado;
         this.objetivo = objetivo;
         this.descricao = descricao;
-        // this.participantes = participantes;
-        this.status = "Em elaboracao";
         this.professor = professor;
         this.participantes.add(this.professor);
         this.professor.addProjeto(this);
@@ -55,6 +61,10 @@ public class Projeto {
 
     public String getDataTermino(){
         return this.dataTermino;
+    }
+
+    public ArrayList<Publicacao> getPublicacoes(){
+        return this.publicacoes;
     }
 
     public static int getQtdProjetos(){
@@ -111,21 +121,11 @@ public class Projeto {
     }
 
     public void changeStatus(){
-        if(this.status.equalsIgnoreCase("Em elaboracao")){
-            this.status = "Em andamento";
-            System.out.println("O projeto agora está em andamento!");
-            alterarQuantidade(qtdProjetosElaboracao, qtdProjetosAndamento);
-        }
-        else if(this.status.equalsIgnoreCase("Em andamento")){
-            if(this.publicacoes.size() > 0){
-                this.status = "Concluido";
-                System.out.println("Projeto concluido!");
-                alterarQuantidade(qtdProjetosAndamento, qtdProjetosConcluidos);
-            } 
-            else{
-                System.out.println("Para alterar o status para 'Concluido', o projeto deve ter publicações associadas");
-            }
-        }
+        status.changeStatus();
+    }
+
+    public void setStatus(State status){
+        this.status = status;
     }
 
     public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores){
