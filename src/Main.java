@@ -294,54 +294,6 @@ public class Main {
         }
     }
 
-    public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores){
-        try{
-            Scanner p = new Scanner(System.in); //scanner do projeto
-            Scanner op = new Scanner(System.in);//scanner da opcao
-            int i = 0;
-    
-            System.out.println("**************************************");
-            for(i = 0; i < projetos.size(); i++){
-                System.out.println("["+ i +"] " + projetos.get(i).getTitulo());
-            }
-            System.out.println("*************************************");
-            System.out.print("Selecione o projeto a ser editado: ");
-            int pr = p.nextInt();
-    
-            Projeto projeto = projetos.get(pr);
-    
-            System.out.println();
-            System.out.println("****************************");
-            System.out.println("*  [1] Alocar participante *");
-            System.out.println("*  [2] Alterar status      *");
-            System.out.println("****************************");
-            System.out.print("Selecione a opção desejada: ");
-            int opt = op.nextInt();
-    
-            if(opt == 1) {
-                Scanner c = new Scanner(System.in);
-                System.out.println("**************************************");
-                for(i = 0; i < colaboradores.size(); i++){
-                    System.out.println("["+i+"] " + colaboradores.get(i).getNome());
-                }
-                System.out.println("**************************************");
-                System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
-                int col = c.nextInt();
-    
-                Colaborador colaborador = colaboradores.get(col);
-    
-                projeto.alocaColaborador(colaborador);
-            }
-            else if(opt == 2){
-                projeto.changeStatus();
-            }
-        }
-        catch(Exception error){
-            msgErroDados();
-            editProjeto(projetos, colaboradores);
-        }
-    }
-
     public static void main(String[] args) {
         ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); //colaboradores cadastrados no sistema
         ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
@@ -358,45 +310,45 @@ public class Main {
 
         int option = startOptions();
 
-        while(option != 0){ // enquanto não for dado o comando de parar o programa
+        while(option != 0){
             switch(option){
-                case 1: // adiciona novo colaborador
+                case 1:
                     System.out.println();
                     newColaborador(professores, colaboradores, alunos);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 2: // adiciona novo projeto
+                case 2:
                     System.out.println();
                     newProjeto(professores, projetos);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 3: // adiciona nova produção academica
-                    ArrayList<Colaborador> autores = new ArrayList<Colaborador>(); // autores de uma publicacao
+                case 3:
+                    ArrayList<Colaborador> autores = new ArrayList<Colaborador>();
                     newProdAcad(colaboradores, autores, professores, alunos);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 4: // edita projeto existente
+                case 4:
                     System.out.println();
-                    editProjeto(projetos, colaboradores);
+                    Projeto.editProjeto(projetos, colaboradores);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 5: // consulta por colaborador
+                case 5:
                     System.out.println();
                     Colaborador.queryColaborador(colaboradores);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 6: // consulta por projeto
+                case 6:
                     System.out.println();
                     Projeto.queryProjeto(projetos);
                     System.out.println();
                     option = startOptions();
                     break;
-                case 7: // relatorio do laboratório
+                case 7:
                     System.out.println();
                     Relatorio relatorio = new Relatorio();
                     relatorio.relatorio();
