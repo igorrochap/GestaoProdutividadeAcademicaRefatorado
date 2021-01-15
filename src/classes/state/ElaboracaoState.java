@@ -7,12 +7,11 @@ public class ElaboracaoState implements State{
     private Projeto projeto;
 
     public ElaboracaoState(Projeto projeto){
-        this.andamentoState = new AndamentoState(projeto);
         this.projeto = projeto;
     }
 
     public void changeStatus(){
-        projeto.setStatus(andamentoState);
+        projeto.setStatus(projeto.getAndamentoState());
         projeto.alterarQuantidade(Projeto.getQtdProjetosElaboracao(), Projeto.getQtdProjetosAndamento());
         System.out.println("O projeto agora está em andamento!");
     }

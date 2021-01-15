@@ -199,7 +199,7 @@ public class Main {
     }
 
     public static void newProdAcad(ArrayList<Colaborador> colaboradores, ArrayList<Colaborador> autores, 
-                                   ArrayList<Professor> professores,  ArrayList<Aluno> alunos){
+                                   ArrayList<Professor> professores,  ArrayList<Aluno> alunos, ArrayList<Publicacao> producoes){
         try{
             Scanner op = new Scanner(System.in); //scanner da opção
             String s; // opção de continuar adicionando autores
@@ -246,6 +246,8 @@ public class Main {
     
     
                 ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao, autores);
+                producoes.add((Publicacao) prod);
+
                 
                 Publicacao publicacao = (Publicacao) prod;
                 for(int i = 0; i < autores.size(); i++){
@@ -283,7 +285,7 @@ public class Main {
         }
         catch(Exception error){
             msgErroDados();
-            newProdAcad(colaboradores, autores, professores, alunos);
+            newProdAcad(colaboradores, autores, professores, alunos, producoes);
         }
     }
 
@@ -292,6 +294,7 @@ public class Main {
         ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
         ArrayList<Projeto> projetos = new ArrayList<Projeto>(); // projetos cadastrados no sistema
         ArrayList<Aluno> alunos = new ArrayList<Aluno>(); // projetos cadastrados no sistema
+        ArrayList<Publicacao> producoes = new ArrayList<Publicacao>(); // projetos cadastrados no sistema
         
 
         System.out.println("**************************************");
@@ -319,13 +322,13 @@ public class Main {
                     break;
                 case 3:
                     ArrayList<Colaborador> autores = new ArrayList<Colaborador>();
-                    newProdAcad(colaboradores, autores, professores, alunos);
+                    newProdAcad(colaboradores, autores, professores, alunos, producoes);
                     System.out.println();
                     option = startOptions();
                     break;
                 case 4:
                     System.out.println();
-                    Projeto.editProjeto(projetos, colaboradores);
+                    Projeto.editProjeto(projetos, colaboradores, producoes);
                     System.out.println();
                     option = startOptions();
                     break;

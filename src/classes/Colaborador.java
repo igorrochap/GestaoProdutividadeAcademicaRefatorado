@@ -84,21 +84,28 @@ public class Colaborador{
     }
 
     public static void queryColaborador(ArrayList<Colaborador> colaboradores){
-        int col;
-        Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
-
-        for(int i = 0; i < colaboradores.size(); i++){
-            System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
-        }
-
-        System.out.print("Selecione o colaborador que deseja consultar os dados: ");
         try{
-            col = c.nextInt();
-            Colaborador colaborador = colaboradores.get(col);
-            System.out.println();
-            colaborador.query();
+            int col;
+            Scanner c = new Scanner(System.in); //scanner do colaborador selecionado
+
+            if(colaboradores.size() > 0){
+                for(int i = 0; i < colaboradores.size(); i++){
+                    System.out.println("["  +i +"] " + colaboradores.get(i).getNome());
+                }
+    
+                System.out.print("Selecione o colaborador que deseja consultar os dados: ");
+
+                col = c.nextInt();
+                Colaborador colaborador = colaboradores.get(col);
+                System.out.println();
+                colaborador.query();
+            
+            }
+            else {
+                System.out.println("Não existem colaboradores cadastrados no sistema!");
+            }
         }
-        catch(InputMismatchException error){
+        catch(Exception error){
             System.err.println("Por favor, selecione uma das opções válidas.");
             queryColaborador(colaboradores);
         }

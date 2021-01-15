@@ -7,13 +7,12 @@ public class AndamentoState implements State{
     private Projeto projeto;
 
     public AndamentoState(Projeto projeto){
-        this.concluidoState = new ConcluidoState(projeto);
         this.projeto = projeto;
     }
 
     public void changeStatus(){
         if(projeto.getPublicacoes().size() > 0) {
-            projeto.setStatus(concluidoState);
+            projeto.setStatus(projeto.getConcluidoState());
             projeto.alterarQuantidade(Projeto.getQtdProjetosAndamento(), Projeto.getQtdProjetosConcluidos());
             System.out.println("Projeto concluido!");
         }

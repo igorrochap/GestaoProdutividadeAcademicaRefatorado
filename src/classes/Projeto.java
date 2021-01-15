@@ -20,12 +20,13 @@ public class Projeto {
     private State andamentoState;
     private State concluidoState;
     private ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
+    private State status;
     private static int qtdProjetos = 0; // quantidade total de projetos
     private static int qtdProjetosElaboracao = 0; // quantidade de projetos em elaboração
     private static int qtdProjetosAndamento = 0; // quantidade de projetos em andamento
     private static int qtdProjetosConcluidos = 0; // quantidade de projetos concluidos
 
-    State status = elaboracaoState;
+    
 
     public Projeto(
         String titulo,
@@ -38,9 +39,9 @@ public class Projeto {
         Colaborador professor
     )
     {
-        elaboracaoState = new ElaboracaoState();
-        andamentoState = new AndamentoState();
-        concluidoState = new ConcluidoState();
+        elaboracaoState = new ElaboracaoState(this);
+        andamentoState = new AndamentoState(this);
+        concluidoState = new ConcluidoState(this);
         this.titulo = titulo;
         this.dataInicio = dataInicio;
         this.dataTermino = dataTermino;
@@ -51,6 +52,7 @@ public class Projeto {
         this.professor = professor;
         this.participantes.add(this.professor);
         this.professor.addProjeto(this);
+        this.status = elaboracaoState;
         qtdProjetos++;
         qtdProjetosElaboracao++;
     }
@@ -82,45 +84,58 @@ public class Projeto {
     public static int getQtdProjetosConcluidos(){
         return qtdProjetosConcluidos;
     }
+
+    public State getElaboracaoState(){
+        return this.elaboracaoState;
+    }
+
+    public State getAndamentoState(){
+        return this.andamentoState;
+    }
+
+    public State getConcluidoState(){
+        return this.concluidoState;
+    }
     
     public void alocaColaborador(Colaborador colaborador){
-        if(this.status.equalsIgnoreCase("Em elaboracao")){ 
-            if(colaborador instanceof Aluno){
-                Aluno aluno = (Aluno) colaborador;
-                if(aluno.tipo.equalsIgnoreCase("Graduacao")){  
-                    if(aluno.getQtdProjetos() == 2) 
-                        System.out.println("O aluno já tem dois projetos atribuidos!");
-                    else{
-                        this.participantes.add(colaborador);
-                        colaborador.addProjeto(this); 
-                        aluno.addQtdProjeto();
-                        System.out.println("Aluno adicionado");
-                    }
-                }
-                else{
-                    this.participantes.add(colaborador); 
-                    colaborador.addProjeto(this);
-                }
-            }
-        }
-        else{
-            System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
-        }
+        // if(this.status.equalsIgnoreCase("Em elaboracao")){ 
+        //     if(colaborador instanceof Aluno){
+        //         Aluno aluno = (Aluno) colaborador;
+        //         if(aluno.tipo.equalsIgnoreCase("Graduacao")){  
+        //             if(aluno.getQtdProjetos() == 2) 
+        //                 System.out.println("O aluno já tem dois projetos atribuidos!");
+        //             else{
+        //                 this.participantes.add(colaborador);
+        //                 colaborador.addProjeto(this); 
+        //                 aluno.addQtdProjeto();
+        //                 System.out.println("Aluno adicionado");
+        //             }
+        //         }
+        //         else{
+        //             this.participantes.add(colaborador); 
+        //             colaborador.addProjeto(this);
+        //         }
+        //     }
+        // }
+        // else{
+        //     System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
+        // }
     }
 
     public void addPublicacao(Publicacao publicacao){
-        if(this.status.equalsIgnoreCase("Em andamento")) 
+        if(this.status == andamentoState) 
             this.publicacoes.add(publicacao);
         else
             System.out.println("Publicação não pode ser associada, pois o projeto está " + this.status);
     }
 
-    public void alterarQuantidade(int quantidade1, int quantidade2){
-        quantidade1 -= 1;
-        quantidade2 += 1;
+    public void alterarQuantidade(int value1, int value2){
+        value1 --;
+        value2 ++;
     }
 
     public void changeStatus(){
+        System.out.println(this.status);
         status.changeStatus();
     }
 
@@ -128,51 +143,72 @@ public class Projeto {
         this.status = status;
     }
 
-    public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores){
+    public static void editProjeto(ArrayList<Projeto> projetos, ArrayList<Colaborador> colaboradores, ArrayList<Publicacao> producoes){
         try{
             Scanner p = new Scanner(System.in); //scanner do projeto
             Scanner op = new Scanner(System.in);//scanner da opcao
+            Scanner pro = new Scanner(System.in);
             int i = 0;
-    
-            System.out.println("**************************************");
-            for(i = 0; i < projetos.size(); i++){
-                System.out.println("["+ i +"] " + projetos.get(i).getTitulo());
-            }
-            System.out.println("*************************************");
-            System.out.print("Selecione o projeto a ser editado: ");
-            int pr = p.nextInt();
-    
-            Projeto projeto = projetos.get(pr);
-    
-            System.out.println();
-            System.out.println("****************************");
-            System.out.println("*  [1] Alocar participante *");
-            System.out.println("*  [2] Alterar status      *");
-            System.out.println("****************************");
-            System.out.print("Selecione a opção desejada: ");
-            int opt = op.nextInt();
-    
-            if(opt == 1) {
-                Scanner c = new Scanner(System.in);
+            
+            if(projetos.size() > 0){
                 System.out.println("**************************************");
-                for(i = 0; i < colaboradores.size(); i++){
-                    System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+                for(i = 0; i < projetos.size(); i++){
+                    System.out.println("["+ i +"] " + projetos.get(i).getTitulo());
                 }
-                System.out.println("**************************************");
-                System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
-                int col = c.nextInt();
-    
-                Colaborador colaborador = colaboradores.get(col);
-    
-                projeto.alocaColaborador(colaborador);
+                System.out.println("*************************************");
+                System.out.print("Selecione o projeto a ser editado: ");
+                int pr = p.nextInt();
+        
+                Projeto projeto = projetos.get(pr);
+        
+                System.out.println();
+                System.out.println("*****************************");
+                System.out.println("*  [1] Alocar participante  *");
+                System.out.println("*  [2] Alterar status       *");
+                System.out.println("*  [3] Adicionar publicacao *");
+                System.out.println("*****************************");
+                System.out.print("Selecione a opção desejada: ");
+                int opt = op.nextInt();
+        
+                if(opt == 1) {
+                    Scanner c = new Scanner(System.in);
+                    System.out.println("**************************************");
+                    for(i = 0; i < colaboradores.size(); i++){
+                        System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+                    }
+                    System.out.println("**************************************");
+                    System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
+                    int col = c.nextInt();
+        
+                    Colaborador colaborador = colaboradores.get(col);
+        
+                    projeto.alocaColaborador(colaborador);
+                }
+                else if(opt == 2){
+                    projeto.changeStatus();
+                }
+                else if(opt == 3){
+                    System.out.println("**************************************");
+                    for(i = 0; i < producoes.size(); i++){
+                        System.out.println("["+i+"] " + producoes.get(i).getTitulo());
+                    }
+                    System.out.println("**************************************");
+                    System.out.print("Selecione a produção que deseja alocar no projeto: ");
+                    
+                    int prod = pro.nextInt();
+
+                    Publicacao publicacao = producoes.get(prod);
+                    
+                    projeto.addPublicacao(publicacao);
+                }
             }
-            else if(opt == 2){
-                projeto.changeStatus();
+            else {
+                System.out.println("Não existem projetos cadastrados no sistema!");
             }
         }
         catch(Exception error){
             System.err.println("Por favor, selecione uma das opções válidas.");
-            editProjeto(projetos, colaboradores);
+            editProjeto(projetos, colaboradores, producoes);
         }
     }
 
@@ -198,6 +234,7 @@ public class Projeto {
         System.out.println("Valor financiado: "  + this.valorFinanciado);
         System.out.println("Objetivo do projeto: "  + this.objetivo);
         System.out.println("Descrição do projeto: "  + this.descricao);
+        System.out.println("Status: "  + this.status);
         
         System.out.println("Participantes do projeto: ");
         for(int i = 0; i < participantes.size(); i++){
