@@ -85,6 +85,18 @@ public class Projeto {
         return qtdProjetosConcluidos;
     }
 
+    public static void setQtdProjetosElaboracao(int value){
+        qtdProjetosElaboracao = value;
+    }
+
+    public static void setQtdProjetosAndamento(int value){
+        qtdProjetosAndamento = value;
+    }
+
+    public static void setQtdProjetosConcluidos(int value){
+        qtdProjetosConcluidos = value;
+    }
+
     public State getElaboracaoState(){
         return this.elaboracaoState;
     }
@@ -129,13 +141,19 @@ public class Projeto {
             System.out.println("Publicação não pode ser associada, pois o projeto está " + this.status);
     }
 
-    public void alterarQuantidade(int value1, int value2){
-        value1 --;
+    public ArrayList<Integer> alterarQuantidade(int value1, int value2){
+        ArrayList<Integer> returns = new ArrayList<Integer>();
+        
+        value1--;
         value2 ++;
+
+        returns.add(value1); 
+        returns.add(value2);
+
+        return returns;
     }
 
     public void changeStatus(){
-        System.out.println(this.status);
         status.changeStatus();
     }
 

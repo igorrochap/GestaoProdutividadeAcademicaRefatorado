@@ -1,9 +1,9 @@
 package src.classes.state;
 
+import java.util.ArrayList;
 import src.classes.Projeto;
 
 public class AndamentoState implements State{
-    private State concluidoState;
     private Projeto projeto;
 
     public AndamentoState(Projeto projeto){
@@ -13,7 +13,12 @@ public class AndamentoState implements State{
     public void changeStatus(){
         if(projeto.getPublicacoes().size() > 0) {
             projeto.setStatus(projeto.getConcluidoState());
-            projeto.alterarQuantidade(Projeto.getQtdProjetosAndamento(), Projeto.getQtdProjetosConcluidos());
+            
+            ArrayList<Integer> values =projeto.alterarQuantidade(Projeto.getQtdProjetosAndamento(), Projeto.getQtdProjetosConcluidos());
+        
+            Projeto.setQtdProjetosAndamento(values.get(0));
+            Projeto.setQtdProjetosConcluidos(values.get(1));
+
             System.out.println("Projeto concluido!");
         }
         else {
