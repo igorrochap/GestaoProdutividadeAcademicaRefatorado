@@ -308,10 +308,10 @@ public class Projeto {
                                 System.out.print("Não existem publicações cadastradas no sistema!");
                             }
                             break;
-                    default:
-                        msgErroOpcoes();
+                        default:
+                            msgErroOpcoes();
 
-                        erro = -1;
+                            erro = -1;
                         
                     }
                 }while(erro == -1);
