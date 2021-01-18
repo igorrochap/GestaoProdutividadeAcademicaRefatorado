@@ -279,30 +279,37 @@ public class Projeto {
                             int col = c.nextInt();
             
                             Colaborador colaborador = colaboradores.get(col);
-            
+
                             projeto.alocaColaborador(colaborador);
-                        
+                            erro = 0;
                             break;
                         case 2:
                             projeto.changeStatus();
+                            erro = 0;
                             break;
                         case 3:
-                            System.out.println("**************************************");
-                            for(i = 0; i < producoes.size(); i++){
-                                System.out.println("["+ i +"] " + producoes.get(i).getTitulo());
-                            }
-                            System.out.println("**************************************");
-                            System.out.print("Selecione a produção que deseja alocar no projeto: ");
-                        
-                            int prod = pro.nextInt();
-
-                            Publicacao publicacao = producoes.get(prod);
+                            if(producoes.size() > 0){
+                                System.out.println("**************************************");
+                                for(i = 0; i < producoes.size(); i++){
+                                    System.out.println("["+ i +"] " + producoes.get(i).getTitulo());
+                                }
+                                System.out.println("**************************************");
+                                System.out.print("Selecione a produção que deseja alocar no projeto: ");
                             
-                            projeto.addPublicacao(publicacao);
+                                int prod = pro.nextInt();
+    
+                                Publicacao publicacao = producoes.get(prod);
+                                
+                                erro = 0;
 
+                                projeto.addPublicacao(publicacao);
+                            }
+                            else{
+                                System.out.print("Não existem publicações cadastradas no sistema!");
+                            }
                             break;
                     default:
-                        System.out.println("Informe os dados corretamente");
+                        msgErroOpcoes();
 
                         erro = -1;
                         
