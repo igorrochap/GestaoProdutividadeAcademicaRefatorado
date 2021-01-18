@@ -2,9 +2,8 @@
 
 Desenvolvido utilizando a IDE Visual Studio Code
 
--------
-## Padrões de projeto:
 
+## Padrões de projeto:
 ### Expert:
 
 src/Main.java
@@ -15,6 +14,8 @@ src/classes/Projeto.java
 
 src/classes/ProducaoAcademica.java
 
+-----
+
 ### Extract Method:
 
 src/Main.java
@@ -22,6 +23,8 @@ src/Main.java
 src/classes/Colaborador.java
 
 src/classes/Projeto.java
+
+-----
 
 ### State:
 
