@@ -7,6 +7,7 @@ public class Relatorio {
     private int qtdProjetosConcluidos;
     private int qtdProjetos;
     private int qtdProducoes;
+
     public void relatorio(){
         this.qtdColaboradores = Colaborador.getQtd();
         this.qtdProjetosElaboracao = Projeto.getQtdProjetosElaboracao();
