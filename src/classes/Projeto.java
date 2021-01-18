@@ -108,6 +108,81 @@ public class Projeto {
     public State getConcluidoState(){
         return this.concluidoState;
     }
+
+    private static void msgErroOpcoes(){
+        System.err.println("Por favor, selecione uma das opções válidas.");
+    }
+
+    public static void newProjeto(ArrayList<Professor> professores, ArrayList<Projeto> projetos){
+        try{
+            int i = 0;
+            Scanner t = new Scanner(System.in);
+            Scanner di = new Scanner(System.in); 
+            Scanner dt = new Scanner(System.in); 
+            Scanner af = new Scanner(System.in); 
+            Scanner vf = new Scanner(System.in); 
+            Scanner o = new Scanner(System.in); 
+            Scanner d = new Scanner(System.in); 
+            Scanner pr = new Scanner(System.in); 
+    
+            System.out.print("Informe o titulo do projeto: ");
+            String titulo = t.nextLine();
+    
+            System.out.println();
+            
+            System.out.print("Informe a data de inicio do projeto: ");
+            String dataInicio = di.nextLine();
+            
+            System.out.println();
+    
+            System.out.print("Informe a data de término do projeto: ");
+            String dataTermino = dt.nextLine();
+    
+            System.out.println();
+    
+            System.out.print("Informe a agência financiadora do projeto: ");
+            String agenciaFinanciadora = af.nextLine();
+    
+            System.out.println();
+    
+            System.out.print("Informe o valor financiado: ");
+            float valorFinanciado = vf.nextFloat();
+    
+            System.out.println();
+    
+            System.out.print("Informe o objetivo do projeto: ");
+            String objetivo = o.nextLine();
+    
+            System.out.println();
+    
+            System.out.print("Informe a descrição do projeto: ");
+            String descricao = d.nextLine();
+    
+            System.out.println();
+    
+            if(professores.size() > 0){
+                for(i = 0; i < professores.size(); i++){
+                    System.out.println("[" + i +"] "+ professores.get(i).getNome());
+                }
+                System.out.print("Selecione o professor que será inicialmente alocado no projeto: ");
+                int prof = pr.nextInt();
+        
+                Colaborador professor = professores.get(prof);
+                
+                Projeto prj = new Projeto(titulo, dataInicio, dataTermino, agenciaFinanciadora, valorFinanciado, objetivo, descricao, professor);
+                projetos.add(prj);
+
+                System.out.println("Projeto adicionado no sistema!");
+            }
+            else{ // o projeto deve ter pelo menos 1 professor alocado
+                System.out.println("Não existem professores cadastrados no sistema! O projeto deve ter pelo menos 1 professor alocado!");
+            }
+        }
+        catch(Exception ex){
+            System.err.println("Dados informados incorretamente! Por favor, informe os dados corretamente.");
+            newProjeto(professores, projetos);
+        }
+    }
     
     public void alocaColaborador(Colaborador colaborador){
         if(this.status == elaboracaoState){ 
@@ -230,7 +305,7 @@ public class Projeto {
             }
         }
         catch(Exception error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             editProjeto(projetos, colaboradores, producoes);
         }
     }
@@ -288,7 +363,7 @@ public class Projeto {
             projeto.query();
         }
         catch(InputMismatchException error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             queryProjeto(projetos);
         }
     }

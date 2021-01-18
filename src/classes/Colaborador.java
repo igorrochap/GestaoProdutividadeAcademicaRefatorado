@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Colaborador{
     private String nome;
@@ -16,6 +17,32 @@ public class Colaborador{
         this.nome = nome;
         this.email = email;
         qtdColaboradores++;
+    }
+
+    private static void msgErroOpcoes(){
+        System.err.println("Por favor, selecione uma das opções válidas.");
+    }
+
+    private static int alunoGrau(){
+        int grau = 0;
+        Scanner s = new Scanner(System.in); // scanner do grau do aluno
+
+        System.out.println("*************GRAU DO ALUNO************");
+        System.out.println("*         [1] Graduacao              *");
+        System.out.println("*         [2] Mestrado               *");
+        System.out.println("*         [3] Doutorado              *");
+        System.out.println("**************************************");
+        System.out.print("Digite o grau do aluno: ");
+
+        try{
+            grau = s.nextInt();
+        }
+        catch(InputMismatchException ex){
+            msgErroOpcoes();
+            grau = alunoGrau();
+        }
+
+        return grau;
     }
 
     public String getNome(){
@@ -40,6 +67,76 @@ public class Colaborador{
 
     public ArrayList<Projeto> getProjetos(){
         return this.projetos;
+    }
+
+    public static void newColaborador(ArrayList<Professor> professores, ArrayList<Colaborador> colaboradores,  ArrayList<Aluno> alunos){
+        Scanner op = new Scanner(System.in); //scanner da opcao
+        Scanner n = new Scanner(System.in); // scanner do nome do colaborador
+        Scanner e = new Scanner(System.in); //scanner do email do colaborador
+        int opt = -1;
+
+        System.out.println("**************************************");
+        System.out.println("*     [1] Aluno                      *");
+        System.out.println("*     [2] Professor                  *");
+        System.out.println("*     [3] Pesquisador                *");
+        System.out.println("**************************************");
+        System.out.print("Selecione a opção desejada: ");
+
+        try{
+            opt = op.nextInt();
+
+            System.out.print("Informe o nome do colaborador: ");
+            String nome = n.nextLine();
+            System.out.print("Informe o email do colaborador: ");
+            String email = e.nextLine();
+            System.out.println();
+        
+            if(opt == 1){ // caso seja um aluno
+                String tipo = "";
+                int grau = 0;
+
+                grau = alunoGrau();
+
+                do{
+                    if(grau == 1)
+                        tipo = "Graduacao";
+                    else if(grau == 2)
+                        tipo = "Mestrado";
+                    else if(grau == 3)
+                        tipo = "Doutorado";
+                    else{
+                        msgErroOpcoes();
+                        grau = alunoGrau();
+                    }
+                }while(grau == -1);
+
+                Colaborador c = new Aluno(nome, email, tipo);
+                colaboradores.add(c);
+        
+                Aluno al = (Aluno) c;
+                alunos.add(al);
+                System.out.println("Aluno adicionado no sistema!");
+            }
+            else if(opt == 2){ // caso seja um professor
+                Colaborador c = new Professor(nome, email);
+                colaboradores.add(c);
+                
+                Professor prof = (Professor) c;
+                professores.add(prof);
+                
+                System.out.println("Professor adicionado no sistema!");
+            }
+            else if(opt == 3){ // caso seja um pesquisador
+                Colaborador c = new Pesquisador(nome, email);
+                colaboradores.add(c);
+
+                System.out.println("Pesquisador adicionado no sistema!");
+            }    
+        }
+        catch(InputMismatchException ex){
+            //msgErroOpcoes();
+            newColaborador(professores, colaboradores, alunos);
+        }
     }
 
     public ArrayList<Projeto> sortDescendingProj(){
@@ -104,7 +201,7 @@ public class Colaborador{
             }
         }
         catch(Exception error){
-            System.err.println("Por favor, selecione uma das opções válidas.");
+            msgErroOpcoes();
             queryColaborador(colaboradores);
         }
     }
