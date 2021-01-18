@@ -56,7 +56,7 @@ public class Main {
         try{
             grau = s.nextInt();
         }
-        catch(InputMismatchException error){
+        catch(InputMismatchException ex){
             msgErroOpcoes();
             grau = alunoGrau();
         }
@@ -110,20 +110,25 @@ public class Main {
         
                 Aluno al = (Aluno) c;
                 alunos.add(al);
+                System.out.println("Aluno adicionado no sistema!");
             }
             else if(opt == 2){ // caso seja um professor
                 Colaborador c = new Professor(nome, email);
                 colaboradores.add(c);
-
+                
                 Professor prof = (Professor) c;
                 professores.add(prof);
+                
+                System.out.println("Professor adicionado no sistema!");
             }
             else if(opt == 3){ // caso seja um pesquisador
                 Colaborador c = new Pesquisador(nome, email);
                 colaboradores.add(c);
+
+                System.out.println("Pesquisador adicionado no sistema!");
             }    
         }
-        catch(InputMismatchException error){
+        catch(InputMismatchException ex){
             msgErroOpcoes();
             newColaborador(professores, colaboradores, alunos);
         }
@@ -187,6 +192,8 @@ public class Main {
                 
                 Projeto prj = new Projeto(titulo, dataInicio, dataTermino, agenciaFinanciadora, valorFinanciado, objetivo, descricao, professor);
                 projetos.add(prj);
+
+                System.out.println("Projeto adicionado no sistema!");
             }
             else{ // o projeto deve ter pelo menos 1 professor alocado
                 System.out.println("Não existem professores cadastrados no sistema! O projeto deve ter pelo menos 1 professor alocado!");
@@ -229,7 +236,7 @@ public class Main {
     
                     System.out.println("Existem mais autores da publicação? [S/N]: ");
                     s = sn.nextLine();
-                }while(s.equalsIgnoreCase("S"));
+                } while(s.equalsIgnoreCase("S"));
     
                 System.out.print("Informe o titulo da publicação: ");
                 String titulo = t.nextLine();
@@ -248,7 +255,7 @@ public class Main {
                 ProducaoAcademica prod = new Publicacao(titulo, nomeConferencia, anoPublicacao, autores);
                 producoes.add((Publicacao) prod);
 
-                
+                System.out.println("Publicação adicionada ao sistema!");
                 Publicacao publicacao = (Publicacao) prod;
                 for(int i = 0; i < autores.size(); i++){
                     autores.get(i).addPublicacao(publicacao);
@@ -257,8 +264,8 @@ public class Main {
                 }
             }
             else if(opt == 2){
-                Scanner al = new Scanner(System.in); // scanner do aluno a ser orientado
-                Scanner p = new Scanner(System.in); // scanner do professor que irá orientar
+                Scanner al = new Scanner(System.in);
+                Scanner p = new Scanner(System.in); 
     
                 for(int i = 0; i < alunos.size(); i++){
                     System.out.println("    [" + i + "] " + alunos.get(i).getNome());
@@ -277,24 +284,25 @@ public class Main {
                 int prof = p.nextInt();
     
                 Professor professor = professores.get(prof);
-    
                 ProducaoAcademica orientacao = new ProducaoAcademica();
     
-                orientacao.orientacao(professor, aluno); // adicionando a orientação
+                orientacao.orientacao(professor, aluno);
+
+                System.out.println("Orientação adicionada ao sistema!");
             }
         }
-        catch(Exception error){
+        catch(Exception ex){
             msgErroDados();
             newProdAcad(colaboradores, autores, professores, alunos, producoes);
         }
     }
 
     public static void main(String[] args) {
-        ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); //colaboradores cadastrados no sistema
-        ArrayList<Professor> professores = new ArrayList<Professor>(); // professores cadastrados no sistema
-        ArrayList<Projeto> projetos = new ArrayList<Projeto>(); // projetos cadastrados no sistema
-        ArrayList<Aluno> alunos = new ArrayList<Aluno>(); // projetos cadastrados no sistema
-        ArrayList<Publicacao> producoes = new ArrayList<Publicacao>(); // projetos cadastrados no sistema
+        ArrayList<Colaborador> colaboradores = new ArrayList<Colaborador>(); 
+        ArrayList<Professor> professores = new ArrayList<Professor>(); 
+        ArrayList<Projeto> projetos = new ArrayList<Projeto>(); 
+        ArrayList<Aluno> alunos = new ArrayList<Aluno>();
+        ArrayList<Publicacao> producoes = new ArrayList<Publicacao>();
         
 
         System.out.println("**************************************");

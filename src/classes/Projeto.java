@@ -11,7 +11,7 @@ public class Projeto {
     private String titulo;
     private String dataInicio, dataTermino;
     private String agenciaFinanciadora;
-    private float valorFinanciado;
+    private double valorFinanciado;
     private String objetivo;
     private String descricao;
     private ArrayList<Colaborador> participantes = new ArrayList<Colaborador>();
@@ -110,28 +110,29 @@ public class Projeto {
     }
     
     public void alocaColaborador(Colaborador colaborador){
-        // if(this.status.equalsIgnoreCase("Em elaboracao")){ 
-        //     if(colaborador instanceof Aluno){
-        //         Aluno aluno = (Aluno) colaborador;
-        //         if(aluno.tipo.equalsIgnoreCase("Graduacao")){  
-        //             if(aluno.getQtdProjetos() == 2) 
-        //                 System.out.println("O aluno já tem dois projetos atribuidos!");
-        //             else{
-        //                 this.participantes.add(colaborador);
-        //                 colaborador.addProjeto(this); 
-        //                 aluno.addQtdProjeto();
-        //                 System.out.println("Aluno adicionado");
-        //             }
-        //         }
-        //         else{
-        //             this.participantes.add(colaborador); 
-        //             colaborador.addProjeto(this);
-        //         }
-        //     }
-        // }
-        // else{
-        //     System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
-        // }
+        if(this.status == elaboracaoState){ 
+            if(colaborador instanceof Aluno){
+                Aluno aluno = (Aluno) colaborador;
+                if(aluno.tipo.equalsIgnoreCase("Graduacao")){  
+                    if(aluno.getQtdProjetos() == 2) 
+                        System.out.println("O aluno já tem dois projetos atribuidos!");
+                    else{
+                        this.participantes.add(colaborador);
+                        colaborador.addProjeto(this); 
+                        aluno.addQtdProjeto();
+                        System.out.println("Aluno adicionado");
+                    }
+                }
+                else{
+                    this.participantes.add(colaborador); 
+                    colaborador.addProjeto(this);
+                    System.out.println("Colaborador adicionado");
+                }
+            }
+        }
+        else{
+            System.out.println("O projeto não aceita mais novas alocações de colaboradores!");
+        }
     }
 
     public void addPublicacao(Publicacao publicacao){
@@ -142,15 +143,15 @@ public class Projeto {
     }
 
     public ArrayList<Integer> alterarQuantidade(int value1, int value2){
-        ArrayList<Integer> returns = new ArrayList<Integer>();
+        ArrayList<Integer> values = new ArrayList<Integer>();
         
         value1--;
         value2 ++;
 
-        returns.add(value1); 
-        returns.add(value2);
+        values.add(value1); 
+        values.add(value2);
 
-        return returns;
+        return values;
     }
 
     public void changeStatus(){
@@ -187,37 +188,41 @@ public class Projeto {
                 System.out.println("*****************************");
                 System.out.print("Selecione a opção desejada: ");
                 int opt = op.nextInt();
-        
-                if(opt == 1) {
-                    Scanner c = new Scanner(System.in);
-                    System.out.println("**************************************");
-                    for(i = 0; i < colaboradores.size(); i++){
-                        System.out.println("["+i+"] " + colaboradores.get(i).getNome());
-                    }
-                    System.out.println("**************************************");
-                    System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
-                    int col = c.nextInt();
-        
-                    Colaborador colaborador = colaboradores.get(col);
-        
-                    projeto.alocaColaborador(colaborador);
-                }
-                else if(opt == 2){
-                    projeto.changeStatus();
-                }
-                else if(opt == 3){
-                    System.out.println("**************************************");
-                    for(i = 0; i < producoes.size(); i++){
-                        System.out.println("["+i+"] " + producoes.get(i).getTitulo());
-                    }
-                    System.out.println("**************************************");
-                    System.out.print("Selecione a produção que deseja alocar no projeto: ");
-                    
-                    int prod = pro.nextInt();
 
-                    Publicacao publicacao = producoes.get(prod);
-                    
-                    projeto.addPublicacao(publicacao);
+                switch(opt){
+                    case 1:
+                        Scanner c = new Scanner(System.in);
+                        System.out.println("**************************************");
+                        for(i = 0; i < colaboradores.size(); i++){
+                            System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+                        }
+                        System.out.println("**************************************");
+                        System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
+                        int col = c.nextInt();
+            
+                        Colaborador colaborador = colaboradores.get(col);
+            
+                        projeto.alocaColaborador(colaborador);
+
+                        break;
+                    case 2:
+                        projeto.changeStatus();
+                        break;
+                    case 3:
+                        System.out.println("**************************************");
+                        for(i = 0; i < producoes.size(); i++){
+                            System.out.println("["+ i +"] " + producoes.get(i).getTitulo());
+                        }
+                        System.out.println("**************************************");
+                        System.out.print("Selecione a produção que deseja alocar no projeto: ");
+                        
+                        int prod = pro.nextInt();
+
+                        Publicacao publicacao = producoes.get(prod);
+                        
+                        projeto.addPublicacao(publicacao);
+
+                        break;
                 }
             }
             else {
