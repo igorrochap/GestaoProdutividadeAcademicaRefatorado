@@ -254,51 +254,62 @@ public class Projeto {
                 int pr = p.nextInt();
         
                 Projeto projeto = projetos.get(pr);
+
+                int erro = 0;
+
+                do{
+                    System.out.println();
+                    System.out.println("*****************************");
+                    System.out.println("*  [1] Alocar participante  *");
+                    System.out.println("*  [2] Alterar status       *");
+                    System.out.println("*  [3] Adicionar publicacao *");
+                    System.out.println("*****************************");
+                    System.out.print("Selecione a opção desejada: ");
+                    int opt = op.nextInt();
+
+                    switch(opt){
+                        case 1:
+                            Scanner c = new Scanner(System.in);
+                            System.out.println("**************************************");
+                            for(i = 0; i < colaboradores.size(); i++){
+                                System.out.println("["+i+"] " + colaboradores.get(i).getNome());
+                            }
+                            System.out.println("**************************************");
+                            System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
+                            int col = c.nextInt();
+            
+                            Colaborador colaborador = colaboradores.get(col);
+            
+                            projeto.alocaColaborador(colaborador);
+                        
+                            break;
+                        case 2:
+                            projeto.changeStatus();
+                            break;
+                        case 3:
+                            System.out.println("**************************************");
+                            for(i = 0; i < producoes.size(); i++){
+                                System.out.println("["+ i +"] " + producoes.get(i).getTitulo());
+                            }
+                            System.out.println("**************************************");
+                            System.out.print("Selecione a produção que deseja alocar no projeto: ");
+                        
+                            int prod = pro.nextInt();
+
+                            Publicacao publicacao = producoes.get(prod);
+                            
+                            projeto.addPublicacao(publicacao);
+
+                            break;
+                    default:
+                        System.out.println("Informe os dados corretamente");
+
+                        erro = -1;
+                        
+                    }
+                }while(erro == -1);
         
-                System.out.println();
-                System.out.println("*****************************");
-                System.out.println("*  [1] Alocar participante  *");
-                System.out.println("*  [2] Alterar status       *");
-                System.out.println("*  [3] Adicionar publicacao *");
-                System.out.println("*****************************");
-                System.out.print("Selecione a opção desejada: ");
-                int opt = op.nextInt();
-
-                switch(opt){
-                    case 1:
-                        Scanner c = new Scanner(System.in);
-                        System.out.println("**************************************");
-                        for(i = 0; i < colaboradores.size(); i++){
-                            System.out.println("["+i+"] " + colaboradores.get(i).getNome());
-                        }
-                        System.out.println("**************************************");
-                        System.out.print("Selecione o colaborador que deseja alocar no projeto: ");
-                        int col = c.nextInt();
-            
-                        Colaborador colaborador = colaboradores.get(col);
-            
-                        projeto.alocaColaborador(colaborador);
-
-                        break;
-                    case 2:
-                        projeto.changeStatus();
-                        break;
-                    case 3:
-                        System.out.println("**************************************");
-                        for(i = 0; i < producoes.size(); i++){
-                            System.out.println("["+ i +"] " + producoes.get(i).getTitulo());
-                        }
-                        System.out.println("**************************************");
-                        System.out.print("Selecione a produção que deseja alocar no projeto: ");
-                        
-                        int prod = pro.nextInt();
-
-                        Publicacao publicacao = producoes.get(prod);
-                        
-                        projeto.addPublicacao(publicacao);
-
-                        break;
-                }
+                
             }
             else {
                 System.out.println("Não existem projetos cadastrados no sistema!");

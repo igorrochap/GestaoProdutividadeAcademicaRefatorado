@@ -96,6 +96,11 @@ public class Main {
                     System.out.println();
                     option = startOptions();
                     break;
+                default: 
+                    System.out.println("Selecione uma opção válida!");
+
+                    option = startOptions();
+                    break;
             }
         }
     }
